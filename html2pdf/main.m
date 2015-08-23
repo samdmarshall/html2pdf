@@ -52,7 +52,7 @@
 
 - (void)webView:(WebView *)sender resource:(id)identifier didFailLoadingWithError:(NSError *)error fromDataSource:(WebDataSource *)dataSource
 {
-	NSLog(@"%@",error);
+	NSLog(@"%@", error);
 }
 
 - (void)webView:(WebView *)sender didFinishLoadForFrame:(WebFrame *)frame
@@ -79,9 +79,10 @@ void usage(void)
 	printf("\n");
 }
 
-int main(int argc, const char * argv[])
+int main(int argc, const char *argv[])
 {
-	@autoreleasepool {
+	@autoreleasepool
+	{
 		NSDictionary *arguments = [[NSUserDefaults standardUserDefaults] volatileDomainForName:NSArgumentDomain];
 		if ([arguments count] == 0 or [arguments objectForKey:@"h"]) {
 			usage();
@@ -105,5 +106,5 @@ int main(int argc, const char * argv[])
 			}
 		}
 	}
-    return 0;
+	return 0;
 }
