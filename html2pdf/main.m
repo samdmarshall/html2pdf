@@ -11,9 +11,6 @@
 #import <WebKit/WebKit.h>
 #include <iso646.h>
 
-@interface WebHTMLView : NSControl <WebDocumentView, WebDocumentSearching>
-@end
-
 @interface WebView2PDF : NSObject
 
 - (instancetype)initWithURL:(NSURL *)url andBase:(NSURL *)baseDirURL;
@@ -60,8 +57,7 @@
 
 - (void)webView:(WebView *)sender didFinishLoadForFrame:(WebFrame *)frame
 {
-	WebHTMLView *webPage = (WebHTMLView *)[[[sender mainFrame] frameView] documentView];
-	NSView *pageView = (NSView *)webPage;
+	NSView *pageView = [[[sender mainFrame] frameView] documentView];
 	NSData *pdfData = [pageView dataWithPDFInsideRect:[pageView bounds]];
 
 	NSString *documentPath = [NSString stringWithFormat:@"%@.pdf", _outputPath];
