@@ -73,7 +73,7 @@ void usage(void)
 	printf("html2pdf -- Converts local html files into PDF documents\n");
 	printf("\n");
 	printf("Arguments:\n");
-	printf("	-h			Displays help and usage\n");
+	printf("	-h		Displays help and usage\n");
 	printf("	-b <path>	Pass the base path to use for relative links\n");
 	printf("	-i <path>	Pass input file, pdf will be written alongside this file with the same name\n");
 	printf("\n");
@@ -86,6 +86,7 @@ int main(int argc, const char *argv[])
 		NSDictionary *arguments = [[NSUserDefaults standardUserDefaults] volatileDomainForName:NSArgumentDomain];
 		if ([arguments count] == 0 or [arguments objectForKey:@"h"]) {
 			usage();
+			return 0;
 		}
 		
 		NSString *inputPath = [arguments objectForKey:@"i"];
@@ -93,7 +94,7 @@ int main(int argc, const char *argv[])
 		if ([arguments count] == 2 and (inputPath != nil and basePath != nil)) {
 			NSURL *htmlURL = [NSURL fileURLWithPath:inputPath];
 			NSURL *baseURL = [NSURL fileURLWithPath:basePath];
-			if ([htmlURL isFileURL] == YES and [baseURL isFileURL] == YES) {
+			if (([htmlURL isFileURL] == YES and [[NSFileManager defaultManager] fileExistsAtPath:inputPath] == YES) and ([baseURL isFileURL] == YES and [[NSFileManager defaultManager] fileExistsAtPath:basePath] == YES)) {
 				WebView2PDF *loadDelegate = [[WebView2PDF alloc] initWithURL:htmlURL andBase:baseURL];
 				WebView *webView = [[WebView alloc] initWithFrame:NSMakeRect(0, 0, 1280, 720) frameName:nil groupName:nil];
 				[webView setFrameLoadDelegate:loadDelegate];
@@ -102,8 +103,11 @@ int main(int argc, const char *argv[])
 				CFRunLoopRun();
 			}
 			else {
-				NSLog(@"Not a local file URL!");
+				printf("Could not lookup files!\n");
 			}
+		}
+		else {
+			printf("Did not provide%s%s\n", (inputPath == nil ? " \"-i\"" : ""), (basePath == nil ? " \"-b\"" : ""));
 		}
 	}
 	return 0;
