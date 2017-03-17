@@ -9,6 +9,8 @@
 dist/
 *.egg-info
 
+html2pdf
+
 ### Xcode ###
 build/
 *.pbxuser

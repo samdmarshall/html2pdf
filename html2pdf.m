@@ -11,7 +11,7 @@
 #import <WebKit/WebKit.h>
 #include <iso646.h>
 
-@interface WebView2PDF : NSObject
+@interface WebView2PDF : NSObject <WebFrameLoadDelegate, WebResourceLoadDelegate>
 
 - (instancetype)initWithURL:(NSURL *)url andBase:(NSURL *)baseDirURL;
 - (NSURLRequest *)webView:(WebView *)sender resource:(id)identifier willSendRequest:(NSURLRequest *)request redirectResponse:(NSURLResponse *)redirectResponse fromDataSource:(WebDataSource *)dataSource;
